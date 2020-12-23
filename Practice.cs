@@ -31,6 +31,7 @@ namespace practiceRevit
             Line geomLine = Line.CreateBound(start, end);
             //墙体的高度,显示为毫米，存储为英尺，0.3048换算
             double height = 15*0.3048;
+            double age;
             double offset = 0;
             Transaction trans = new Transaction(doc,"创建墙体");
               trans.Start();
