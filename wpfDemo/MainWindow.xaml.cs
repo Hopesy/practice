@@ -24,5 +24,11 @@ namespace wpfDemo
         {
             InitializeComponent();
         }
+
+        private void Button_Click(object sender, RoutedEventArgs e)
+        {
+            MessageBox.Show("墙体创建成功");
+            this.Close();
+        }
     }
 }

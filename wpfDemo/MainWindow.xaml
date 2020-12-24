@@ -7,6 +7,9 @@
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800">
     <Grid>
-        
+        <Button x:Name="button" Content="创建墙体" HorizontalAlignment="Left" Margin="370,199,0,0" VerticalAlignment="Top" Width="75" Click="Button_Click"/>
+        <Label x:Name="label" Content="输入墙体高度" HorizontalAlignment="Left" Margin="135,195,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.62,0.477" Height="22" Width="60"/>
+        <TextBox x:Name="textBox" HorizontalAlignment="Left" Height="23" Margin="220,199,0,0" TextWrapping="Wrap"  VerticalAlignment="Top" Width="75"/>
+
     </Grid>
 </Window>

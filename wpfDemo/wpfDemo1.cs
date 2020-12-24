@@ -16,22 +16,34 @@ namespace wpfDemo
             //获取当前文档
             UIDocument uiDoc = commandData.Application.ActiveUIDocument;
             Document doc = uiDoc.Document;
-            //获取墙体注意这里是wall（墙实例familyinstance）而不是wallType（族类型familySimbol）
-            //Wall wall = doc.GetElement(new ElementId(453726)) as Wall;//ID经常改变，不建议这样获取
-            Wall wallInstance1 = new FilteredElementCollector(doc).OfCategory(BuiltInCategory.OST_Walls).OfClass(typeof(Wall)).FirstOrDefault(x => x.Name == "test") as Wall;
-            //lookupparameter获取属性，注意单位转换
-            double height = wallInstance1.LookupParameter("无连接高度").AsDouble() * 0.3048;
-            int roomBound = wallInstance1.LookupParameter("房间边界").AsInteger();
-            string id = wallInstance1.Id.ToString();
-            // TaskDialog.Show("显示高度",$"墙的高度为:{height},墙的边界值是:{roomBound}\n墙体的ID为{id}");
-            //修改墙体的属性，需要开启事务
-            Transaction trans = new Transaction(doc, "修改墙体高度");
+
+            MainWindow windowTest= new MainWindow();
+            //windowTest.Show();//非模态窗体，没有确定的状态，即使不关掉窗体，也会执行下面的代码，自动创建墙体
+            windowTest.ShowDialog();//模态窗体，叉掉窗口才能进行下一步，执行这个函数之后的代码
+            //使用过滤器获取墙的类别
+            FilteredElementCollector collector = new FilteredElementCollector(doc);
+            Element ele = collector.OfCategory(BuiltInCategory.OST_Walls).OfClass(typeof(WallType))
+                .FirstOrDefault(X => X.Name == "内墙-100");
+            WallType wallType = ele as WallType;
+            //获取标高
+            //元素收集器需要再次创建一个
+            Level le = new FilteredElementCollector(doc).OfClass(typeof(Level)).FirstOrDefault(X => X.Name == "1F") as Level;
+            //生成墙体的参照线
+            XYZ start = new XYZ(0, 0, 0);
+            XYZ end = new XYZ(100, 100, 0);
+            Line geomLine = Line.CreateBound(start, end);
+            //墙体的高度,显示为毫米，存储为英尺，0.3048换算
+            double height = Convert.ToDouble(windowTest.textBox.Text)/0.3048/1000;
+
+            double offset = 0;
+            Transaction trans = new Transaction(doc, "创建墙体");
             trans.Start();
-            wallInstance1.LookupParameter("无连接高度").Set(5 / 0.3048);
-            double heightChanged = wallInstance1.LookupParameter("无连接高度").AsDouble() * 0.3048;
-            TaskDialog.Show("显示信息", $"墙修改后的高度为:{heightChanged},墙的边界值是:{roomBound}\n墙体的ID为{id}");
+            //创建墙体，增删改需要在事务中执行，事务中的代码耗费资源
+            //即使写了commit，但是代码有问题，也会报错显示事务未关闭
+            Wall wall = Wall.Create(doc, geomLine, wallType.Id, le.Id, height, offset, true, true);
             trans.Commit();
             return Result.Succeeded;
+
         }
     }
 }

@@ -40,9 +40,11 @@
   <ItemGroup>
     <Reference Include="RevitAPI">
       <HintPath>..\..\..\software\REVIT2018\Revit 2018\RevitAPI.dll</HintPath>
+      <Private>False</Private>
     </Reference>
     <Reference Include="RevitAPIUI">
       <HintPath>..\..\..\software\REVIT2018\Revit 2018\RevitAPIUI.dll</HintPath>
+      <Private>False</Private>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
