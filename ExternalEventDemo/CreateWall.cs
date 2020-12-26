@@ -16,11 +16,7 @@ namespace ExternalEventDemo
             // UIDocument uiDoc = commandData.Application.ActiveUIDocument;
             // Document doc = uiDoc.Document;
             Document doc = app.ActiveUIDocument.Document;
-            MainWindow windowTest = new MainWindow();
-            //windowTest.Show();//非模态窗体，没有确定的状态，即使不关掉窗体，也会执行下面的代码，自动创建墙体
-            windowTest.ShowDialog();//模态窗体，叉掉窗口才能进行下一步，执行这个函数之后的代码
             //使用过滤器获取墙的类别
-    
             FilteredElementCollector collector = new FilteredElementCollector(doc);
             Element ele = collector.OfCategory(BuiltInCategory.OST_Walls).OfClass(typeof(WallType))
                 .FirstOrDefault(X => X.Name == "内墙-100");

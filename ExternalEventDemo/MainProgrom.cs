@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 namespace ExternalEventDemo
 {
     [Transaction(TransactionMode.Manual)]
-    class wpfDemo1 : IExternalCommand
+    class MainProgrom : IExternalCommand
     {
         public Result Execute(ExternalCommandData commandData, ref string message, ElementSet elements)
         {
