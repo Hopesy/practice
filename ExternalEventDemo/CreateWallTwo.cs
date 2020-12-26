@@ -7,17 +7,17 @@ using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ExternalEventDemo 
+namespace ExternalEventDemo
 {
-    class CreateWall : IExternalEventHandler
+    class CreateWallTwo : IExternalEventHandler
     {
-        public double height1 { get; set; }
+        public double height2 { get; set; }
         public void Execute(UIApplication app)
         {
             //获取当前文档
             // UIDocument uiDoc = commandData.Application.ActiveUIDocument;
             // Document doc = uiDoc.Document;
-            
+
             Document doc = app.ActiveUIDocument.Document;
             //使用过滤器获取墙的类别
             FilteredElementCollector collector = new FilteredElementCollector(doc);
@@ -28,11 +28,11 @@ namespace ExternalEventDemo
             //元素收集器需要再次创建一个
             Level le = new FilteredElementCollector(doc).OfClass(typeof(Level)).FirstOrDefault(X => X.Name == "1F") as Level;
             //生成墙体的参照线
-            XYZ start = new XYZ(0, 0, 0);
-            XYZ end = new XYZ(100, 100, 0);
+            XYZ start = new XYZ(50, 50, 0);
+            XYZ end = new XYZ(200, 150, 0);
             Line geomLine = Line.CreateBound(start, end);
             //墙体的高度,显示为毫米，存储为英尺，0.3048换算
-            double height = height1/ 0.3048 / 1000;
+            double height = height2 / 0.3048 / 1000;
             double offset = 0;
             Transaction trans = new Transaction(doc, "创建墙体");
             trans.Start();
@@ -40,21 +40,21 @@ namespace ExternalEventDemo
             //即使写了commit，但是代码有问题，也会报错显示事务未关闭
             Wall wall = Wall.Create(doc, geomLine, wallType.Id, le.Id, height, offset, true, true);
             trans.Commit();
-           /** if(!(wall.Id == null))
-            {
-                TaskDialog.Show("eventTEST", "墙体生成成功");
-            }
-            else
-            {
-                TaskDialog.Show("eventTEST", "墙体没有生成");
-            }**/
-        
+            /** if(!(wall.Id == null))
+             {
+                 TaskDialog.Show("eventTEST", "墙体生成成功");
+             }
+             else
+             {
+                 TaskDialog.Show("eventTEST", "墙体没有生成");
+             }**/
+
         }
 
         public string GetName()
         {
             //套路，返回类名就行CreateWall
-            return "CreateWall";
+            return "CreateWallTwo";
         }
     }
 }

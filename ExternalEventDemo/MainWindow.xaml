@@ -6,8 +6,13 @@
         xmlns:local="clr-namespace:ExternalEventDemo"
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800">
-    <Grid>
-        <Button Content="创建墙" HorizontalAlignment="Left" Margin="370,170,0,0" VerticalAlignment="Top" Width="75" Click="Button_Click"/>
+    <Grid Margin="0,0,-34.4,-20">
+        <Button Content="创建墙1" HorizontalAlignment="Left" Margin="370,170,0,0" VerticalAlignment="Top" Width="75" Click="Button_Click1"/>
+        <Label Content="创建墙1" HorizontalAlignment="Left" Margin="175,167,0,0" VerticalAlignment="Top"/>
+        <Label Content="创建墙2" HorizontalAlignment="Left" Margin="175,214,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.245,3.016"/>
+        <TextBox x:Name="height1"  Text="" HorizontalAlignment="Left" Height="25" Margin="250,167,0,0" TextWrapping="Wrap"  VerticalAlignment="Top" Width="95"/>
+        <TextBox x:Name="height2"  Text="" HorizontalAlignment="Left" Height="22" Margin="250,214,0,0" TextWrapping="Wrap"  VerticalAlignment="Top" Width="95"/>
+        <Button Content="创建墙2" HorizontalAlignment="Left" Margin="370,225,0,0" VerticalAlignment="Top" Width="75" Click="Button_Click2"/>
 
     </Grid>
 </Window>
