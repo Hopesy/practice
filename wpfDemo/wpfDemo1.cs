@@ -3,9 +3,12 @@ using Autodesk.Revit.DB;
 using Autodesk.Revit.UI;
 using System;
 using System.Collections.Generic;
+using System.Data.SqlClient;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using wpfDemo.Models;
+
 namespace wpfDemo
 {
     [Transaction(TransactionMode.Manual)]
@@ -13,6 +16,31 @@ namespace wpfDemo
     {
         public Result Execute(ExternalCommandData commandData, ref string message, ElementSet elements)
         {
+
+            #region 与从sqlServer中读取数据
+            //[1]编写连接字符串与SQL语句
+            string connString = @"Server=.;DataBase=WallDB;Uid=sa;Pwd=Zz1416200020";
+            string sql = $"select * from WallCreate where WallId =1";
+            //【2】建立连接
+            SqlConnection conn = new SqlConnection(connString);
+            //【3】打开连接
+            conn.Open();
+            //【4】执行命令
+            SqlCommand cmd = new SqlCommand(sql, conn);
+            //【5】读取返回值，返回值为object
+            SqlDataReader sqlData = cmd.ExecuteReader();
+            WallCreate wallCreate = new WallCreate();
+            if (sqlData.Read())
+            {
+                wallCreate.WallHeight = Convert.ToDouble(sqlData["WallHeight"]);
+                wallCreate.StartPointX = Convert.ToDouble(sqlData["StartPointX"]);
+                wallCreate.StartPointY = Convert.ToDouble(sqlData["StartPointY"]);
+                wallCreate.StartPointZ = Convert.ToDouble(sqlData["StartPointZ"]);
+                wallCreate.EndPointX = Convert.ToDouble(sqlData["EndPointX"]);
+                wallCreate.EndPointY = Convert.ToDouble(sqlData["EndPointY"]);
+                wallCreate.EndPointZ = Convert.ToDouble(sqlData["EndPointZ"]);
+            }
+            #endregion 
             //获取当前文档
             UIDocument uiDoc = commandData.Application.ActiveUIDocument;
             Document doc = uiDoc.Document;
@@ -33,8 +61,8 @@ namespace wpfDemo
             //元素收集器需要再次创建一个
             Level le = new FilteredElementCollector(doc).OfClass(typeof(Level)).FirstOrDefault(X => X.Name == "1F") as Level;
             //生成墙体的参照线
-            XYZ start = new XYZ(0, 0, 0);
-            XYZ end = new XYZ(100, 100, 0);
+            XYZ start = new XYZ(wallCreate.StartPointX, wallCreate.StartPointY, wallCreate.StartPointZ);
+            XYZ end = new XYZ(wallCreate.EndPointX, wallCreate.EndPointY, wallCreate.EndPointZ);
             Line geomLine = Line.CreateBound(start, end);
             //墙体的高度,显示为毫米，存储为英尺，0.3048换算
             double height = Convert.ToDouble(windowTest.textBox.Text)/0.3048/1000;
