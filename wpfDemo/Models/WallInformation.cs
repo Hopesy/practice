@@ -8,7 +8,7 @@ namespace wpfDemo.Models
 {
     class WallInformation
     {
-        public float Area { get; set; }
-        public float Length { get; set; }
+        public double Area { get; set; }
+        public double Length { get; set; }
     }
 }

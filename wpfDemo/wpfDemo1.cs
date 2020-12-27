@@ -19,7 +19,7 @@ namespace wpfDemo
 
             #region 与从sqlServer中读取数据
             //[1]编写连接字符串与SQL语句
-            string connString = @"Server=.;DataBase=WallDB;Uid=sa;Pwd=Zz1416200020";
+            string connString = @"server=.;DataBase=WallDb;Uid=sa;Pwd=Zz1416200020"; 
             string sql = $"select * from WallCreate where WallId =1";
             //【2】建立连接
             SqlConnection conn = new SqlConnection(connString);
